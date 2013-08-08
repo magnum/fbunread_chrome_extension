@@ -1,25 +1,21 @@
 var on = false;
-
 chrome.browserAction.onClicked.addListener(function(tab){
-
-      
        if(on) {
-         turnOff(tab.id);
+         turn_off(tab.id);
        } else {
          chrome.browserAction.setIcon({path: 'icon.png'}); 
-         turnOn(tab.id);
+         tufn_on(tab.id);
        }
 });
 
-function turnOn(tabId){
-
+function tufn_on(tabId){
        chrome.tabs.executeScript(tabId, {file: "scrolling_on.js"});
        on = true;
        chrome.browserAction.setTitle({title:'Running...'});
        chrome.tabs.sendRequest(tabId,{}); 
 };
 
-function turnOff(tabId) {
+function turn_off(tabId) {
 
        chrome.tabs.executeScript(tabId, {file: "scrolling_off.js"});
        on = false;
@@ -31,22 +27,23 @@ chrome.tabs.onRemoved.addListener(function(tabId){
        turnOff(tabId);  
 });
 
-function drawButton(percent) {
+function draw_button(percent) {
+       var elem = document.createElement('canvas');
+       elem.setAttribute('id', 'canvas');
+       elem.setAttribute('width', 19);
+       elem.setAttribute('height', 19);
 
-       var canvas = document.getElementById("canvas"),
+       var canvas = elem;
            context = canvas.getContext('2d'); 
            context.clearRect(0,0,19,19);
-           context.font = '16px Georgia'; 
-           context.fillStyle = 'blue';
-           context.fillText(percent,0,15);
-
+           context.font = '10px Arial'; 
+           context.fillStyle = 'black';
+           context.fillText(parseInt(percent)+"%",0,15);
        return context.getImageData(0,0,19,19);    
 };
 
 chrome.extension.onRequest.addListener(function(req, sender, response){
-
        var percent = req.percentage,
-           imageData = drawButton(percent); 
-
+           imageData = draw_button(percent); 
        chrome.browserAction.setIcon({imageData: imageData}); 
 });

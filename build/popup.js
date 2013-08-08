@@ -1,4 +1,1 @@
-    chrome.tabs.sendRequest(tabId, 
-        {"type": "consoleLog", "value": "message"}); 
-
-        alert("test");
+console.log("popup loaded");
