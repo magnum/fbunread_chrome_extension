@@ -4,11 +4,11 @@ chrome.browserAction.onClicked.addListener(function(tab){
          turn_off(tab.id);
        } else {
          chrome.browserAction.setIcon({path: 'icon.png'}); 
-         tufn_on(tab.id);
+         turn_on(tab.id);
        }
 });
 
-function tufn_on(tabId){
+function turn_on(tabId){
        chrome.tabs.executeScript(tabId, {file: "scrolling_on.js"});
        on = true;
        chrome.browserAction.setTitle({title:'Running...'});
@@ -27,7 +27,13 @@ chrome.tabs.onRemoved.addListener(function(tabId){
        turnOff(tabId);  
 });
 
-function draw_button(percent) {
+function getStories() {
+  var stories = $("li.uiStreamStory");
+  return stories;
+}
+
+function draw_button(text) {
+
        var elem = document.createElement('canvas');
        elem.setAttribute('id', 'canvas');
        elem.setAttribute('width', 19);
@@ -38,12 +44,12 @@ function draw_button(percent) {
            context.clearRect(0,0,19,19);
            context.font = '10px Arial'; 
            context.fillStyle = 'black';
-           context.fillText(parseInt(percent)+"%",0,15);
+           context.fillText(text,0,15);
        return context.getImageData(0,0,19,19);    
 };
 
 chrome.extension.onRequest.addListener(function(req, sender, response){
-       var percent = req.percentage,
-           imageData = draw_button(percent); 
+       var text = req.text,
+           imageData = draw_button(text); 
        chrome.browserAction.setIcon({imageData: imageData}); 
 });

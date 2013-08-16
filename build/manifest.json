@@ -19,7 +19,8 @@
   "permissions": [
     "https://*/*",
     "http://*/*",
-    "tabs"
+    "tabs",
+    "storage"
   ],
   
   "background": {
@@ -31,8 +32,10 @@
 
   "content_scripts": [
     {
+      //"matches": ["*://*.facebook.com/*"],
       "matches": ["http://*/*"],
       "js":[
+        "jquery.min.js",
         "scrolling_on.js",
         "scrolling_off.js"
       ] 
